@@ -22,7 +22,7 @@ class TransferenciaScreen extends StatelessWidget {
             Container(
               height: 200,
               child: Image.asset('lib/assets/images/dollar.png'),
-            ), // Adicionar aqui
+            ),
             SizedBox(height: 20),
             TextField(
               controller: _accountController,
@@ -42,27 +42,16 @@ class TransferenciaScreen extends StatelessWidget {
             Consumer<BalanceProvider>(
               builder: (context, balanceProvider, child) {
                 return ElevatedButton(
-                  onPressed: () {
-                    final amount = double.tryParse(_amountController.text);
-                    if (amount == null || amount <= 0) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text('Por favor, insira um valor válido.'),
-                        backgroundColor: Colors.red,
-                      ));
-                    } else if (!balanceProvider.canSubtract(amount)) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text('Saldo insuficiente.'),
-                        backgroundColor: Colors.red,
-                      ));
-                    } else {
-                      balanceProvider.subtract(amount);
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        backgroundColor: Colors.green,
-                        content: Text('Transferência realizada com sucesso!'),
-                      ));
-                      // Voltar para a tela principal
-                    }
-                  },
+                  onPressed: () => _handleTransfer(context, balanceProvider),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue, // Fundo azul
+                    foregroundColor: Colors.white, // Texto branco
+                    textStyle: TextStyle(
+                      fontSize: 25, // Tamanho do texto maior
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 30, vertical: 15), // Ajusta o padding
+                  ),
                   child: Text('Transferir'),
                 );
               },
@@ -71,5 +60,27 @@ class TransferenciaScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _handleTransfer(BuildContext context, BalanceProvider balanceProvider) {
+    final amount = double.tryParse(_amountController.text);
+    if (amount == null || amount <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Por favor, insira um valor válido.'),
+        backgroundColor: Colors.red,
+      ));
+    } else if (!balanceProvider.canSubtract(amount)) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Saldo insuficiente.'),
+        backgroundColor: Colors.red,
+      ));
+    } else {
+      balanceProvider.subtract(amount);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.green,
+        content: Text('Transferência realizada com sucesso!'),
+      ));
+      // Voltar para a tela principal
+    }
   }
 }

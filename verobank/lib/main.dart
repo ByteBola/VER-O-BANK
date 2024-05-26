@@ -6,7 +6,7 @@ import 'screens/main_screen.dart';
 import 'screens/cotacao_screen.dart';
 import 'screens/transferencia_screen.dart';
 import 'screens/pix_screen.dart'; // Importe a tela do PIX
-
+ 
 void main() {
   runApp(
     ChangeNotifierProvider(

@@ -43,6 +43,15 @@ class PixScreen extends StatelessWidget {
               onPressed: () {
                 _performPixTransaction(context);
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue, // Fundo azul
+                foregroundColor: Colors.white, // Texto branco
+                textStyle: TextStyle(
+                  fontSize: 25, // Tamanho do texto maior
+                ),
+                padding: EdgeInsets.symmetric(
+                    horizontal: 30, vertical: 15), // Ajusta o padding
+              ),
               child: Text('Realizar PIX'),
             ),
           ],

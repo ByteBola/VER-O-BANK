@@ -6,7 +6,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   String? _emailError;
@@ -16,7 +16,9 @@ class _LoginScreenState extends State<LoginScreen> {
     if (value.isEmpty) {
       return 'Por favor, insira seu e-mail';
     }
-    if (!value.contains('@')) {
+    // Expressão regular para validar e-mail
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+    if (!emailRegex.hasMatch(value)) {
       return 'E-mail inválido';
     }
     return null;
@@ -34,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _validateInputs() {
     setState(() {
-      _emailError = _validateEmail(_usernameController.text);
+      _emailError = _validateEmail(_emailController.text);
       _passwordError = _validatePassword(_passwordController.text);
     });
 
@@ -62,13 +64,13 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-              height: 200,
-              child: Image.asset('lib/assets/images/bandeira_pará.png'),
+              height: 250,
+              child: Image.asset('lib/assets/images/logo.png'),
             ),
             SizedBox(height: 20),
             // Campo de E-mail
             TextField(
-              controller: _usernameController,
+              controller: _emailController,
               decoration: InputDecoration(
                 labelText: 'E-mail',
                 errorText: _emailError,
@@ -97,6 +99,15 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _validateInputs,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue, // Fundo azul
+                foregroundColor: Colors.white, // Texto branco
+                textStyle: TextStyle(
+                  fontSize: 25, // Tamanho do texto maior
+                ),
+                padding: EdgeInsets.symmetric(
+                    horizontal: 30, vertical: 15), // Ajusta o padding
+              ),
               child: Text('Login'),
             ),
           ],

@@ -15,13 +15,40 @@ class MainScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, '/cotacao');
               },
-              child: Text('Cotação'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue, // Cor de fundo do botão
+                padding: EdgeInsets.symmetric(
+                    horizontal: 40,
+                    vertical: 20), // Espaçamento interno do botão
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(20), // Borda arredondada do botão
+                ),
+              ),
+              child: Text(
+                'Cotação',
+                style: TextStyle(fontSize: 18), // Tamanho do texto
+              ),
             ),
+            SizedBox(height: 20), // Espaçamento entre os botões
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/transferencia');
               },
-              child: Text('Transferência'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue, // Cor de fundo do botão
+                padding: EdgeInsets.symmetric(
+                    horizontal: 40,
+                    vertical: 20), // Espaçamento interno do botão
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(20), // Borda arredondada do botão
+                ),
+              ),
+              child: Text(
+                'Transferência',
+                style: TextStyle(fontSize: 18), // Tamanho do texto
+              ),
             ),
           ],
         ),

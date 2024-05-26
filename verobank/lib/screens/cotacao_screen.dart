@@ -77,6 +77,11 @@ class _CotacaoScreenState extends State<CotacaoScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Image.asset(
+              'lib/assets/images/budget.png',
+              height: 250, // Defina a altura desejada para a logo
+            ),
+            SizedBox(height: 20),
             TextField(
               controller: _realController,
               decoration: InputDecoration(

@@ -19,7 +19,10 @@ class TransferenciaScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.asset('assets/images/dollar.png'), // Adicionar aqui
+            Container(
+              height: 200,
+              child: Image.asset('lib/assets/images/dollar.png'),
+            ), // Adicionar aqui
             SizedBox(height: 20),
             TextField(
               controller: _accountController,

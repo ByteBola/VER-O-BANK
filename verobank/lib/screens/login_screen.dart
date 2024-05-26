@@ -61,8 +61,9 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Expanded(
-              child: Image.asset('lib/assets/images/dollar.png'),
+            Container(
+              height: 200,
+              child: Image.asset('lib/assets/images/bandeira_pará.png'),
             ),
             SizedBox(height: 20),
             // Campo de E-mail

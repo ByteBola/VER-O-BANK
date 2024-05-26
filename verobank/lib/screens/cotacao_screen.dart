@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/services.dart';
 
 class CotacaoScreen extends StatefulWidget {
   @override
@@ -13,6 +14,7 @@ class _CotacaoScreenState extends State<CotacaoScreen> {
   String _selectedCurrency = 'USD';
   Map<String, double> _currencies = {};
   bool _isLoading = false;
+  String _convertedValue = '';
 
   Future<void> _fetchCotacao() async {
     setState(() {
@@ -41,7 +43,26 @@ class _CotacaoScreenState extends State<CotacaoScreen> {
   }
 
   double _convertCurrency(double value) {
-    return value / _currencies[_selectedCurrency]!;
+    if (_currencies.containsKey(_selectedCurrency)) {
+      return value / _currencies[_selectedCurrency]!;
+    } else {
+      return 0.0; // Valor de fallback caso a chave não exista
+    }
+  }
+
+  void _handleConversion() {
+    if (_realController.text.isNotEmpty && _currencies.isNotEmpty) {
+      double realValue = double.parse(_realController.text);
+      double convertedValue = _convertCurrency(realValue);
+      setState(() {
+        _convertedValue =
+            'R\$ ${_realController.text} = ${convertedValue.toStringAsFixed(2)} $_selectedCurrency';
+      });
+    } else {
+      setState(() {
+        _convertedValue = 'Por favor, insira um valor válido.';
+      });
+    }
   }
 
   @override
@@ -62,7 +83,10 @@ class _CotacaoScreenState extends State<CotacaoScreen> {
                 labelText: 'Valor em Real',
                 border: OutlineInputBorder(),
               ),
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*'))
+              ], // Allow only digits and decimal point
             ),
             SizedBox(height: 20),
             DropdownButton<String>(
@@ -82,7 +106,13 @@ class _CotacaoScreenState extends State<CotacaoScreen> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                _fetchCotacao();
+                if (_realController.text.isEmpty) {
+                  setState(() {
+                    _convertedValue = 'Por favor, insira um valor em Real.';
+                  });
+                } else {
+                  _fetchCotacao().then((_) => _handleConversion());
+                }
               },
               child:
                   _isLoading ? CircularProgressIndicator() : Text('Converter'),
@@ -96,9 +126,7 @@ class _CotacaoScreenState extends State<CotacaoScreen> {
             ),
             SizedBox(height: 20),
             Text(
-              _realController.text.isNotEmpty
-                  ? 'R\$ ${_realController.text} = ${_convertCurrency(double.parse(_realController.text)).toStringAsFixed(2)} ${_selectedCurrency}'
-                  : _cotacao,
+              _convertedValue.isNotEmpty ? _convertedValue : _cotacao,
               style: TextStyle(fontSize: 18),
               textAlign: TextAlign.center,
             ),

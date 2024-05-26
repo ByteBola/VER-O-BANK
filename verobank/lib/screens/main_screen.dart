@@ -8,51 +8,108 @@ class MainScreen extends StatelessWidget {
         title: Text('Principal'),
         backgroundColor: Colors.blue,
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/cotacao');
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue, // Cor de fundo do botão
-                padding: EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 20), // Espaçamento interno do botão
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(20), // Borda arredondada do botão
-                ),
+            Container(
+              padding: EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: Colors.blueAccent,
+                borderRadius: BorderRadius.circular(10.0),
               ),
-              child: Text(
-                'Cotação',
-                style: TextStyle(fontSize: 18), // Tamanho do texto
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Saldo Disponível',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                  Text(
+                    'R\$ 1412,00',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 20), // Espaçamento entre os botões
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/transferencia');
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue, // Cor de fundo do botão
-                padding: EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 20), // Espaçamento interno do botão
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(20), // Borda arredondada do botão
-                ),
-              ),
-              child: Text(
-                'Transferência',
-                style: TextStyle(fontSize: 18), // Tamanho do texto
+            SizedBox(height: 20),
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10.0,
+                mainAxisSpacing: 10.0,
+                children: <Widget>[
+                  _buildGridItem(
+                    context,
+                    icon: Icons.receipt,
+                    label: 'Extrato',
+                    route: null, // Sem rota definida
+                  ),
+                  _buildGridItem(
+                    context,
+                    icon: Icons.compare_arrows,
+                    label: 'Transferência',
+                    route: '/transferencia', // Rota para Transferência
+                  ),
+                  _buildGridItem(
+                    context,
+                    icon: Icons.attach_money,
+                    label: 'Cotação',
+                    route: '/cotacao', // Rota para Cotação
+                  ),
+                  _buildGridItem(
+                    context,
+                    icon: Icons.qr_code,
+                    label: 'Pix',
+                    route: null, // Sem rota definida
+                  ),
+                ],
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildGridItem(BuildContext context, {required IconData icon, required String label, String? route}) {
+    return GestureDetector(
+      onTap: () {
+        if (route != null) {
+          Navigator.pushNamed(context, route);
+        }
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Colors.blue.shade100,
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Icon(
+              icon,
+              size: 40.0,
+              color: Colors.blue,
+            ),
+          ),
+          SizedBox(height: 8.0),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 14.0,
+              color: Colors.blue,
+            ),
+          ),
+        ],
       ),
     );
   }

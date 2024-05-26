@@ -57,9 +57,10 @@ class TransferenciaScreen extends StatelessWidget {
                     } else {
                       balanceProvider.subtract(amount);
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        backgroundColor: Colors.green,
                         content: Text('Transferência realizada com sucesso!'),
                       ));
-                      Navigator.pop(context); // Voltar para a tela principal
+                      // Voltar para a tela principal
                     }
                   },
                   child: Text('Transferir'),

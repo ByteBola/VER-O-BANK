@@ -74,7 +74,7 @@ class MainScreen extends StatelessWidget {
                     context,
                     icon: Icons.qr_code,
                     label: 'Pix',
-                    route: null, // Sem rota definida
+                    route: '/pix', // Sem rota definida
                   ),
                 ],
               ),

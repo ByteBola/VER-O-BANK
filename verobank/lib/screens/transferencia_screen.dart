@@ -9,6 +9,7 @@ class TransferenciaScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Transferência'),
+        backgroundColor: Colors.blue,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

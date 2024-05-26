@@ -6,6 +6,7 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Principal'),
+        backgroundColor: Colors.blue,
       ),
       body: Center(
         child: Column(

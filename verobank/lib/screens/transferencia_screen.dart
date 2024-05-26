@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:verobank/providers/balance_provider.dart';
 
 class TransferenciaScreen extends StatelessWidget {
   final TextEditingController _amountController = TextEditingController();
@@ -16,24 +19,49 @@ class TransferenciaScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Image.asset('assets/images/dollar.png'), // Adicionar aqui
+            SizedBox(height: 20),
             TextField(
               controller: _accountController,
               decoration: InputDecoration(labelText: 'Número da Conta'),
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             ),
             TextField(
               controller: _amountController,
               decoration: InputDecoration(labelText: 'Valor'),
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*'))
+              ],
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Placeholder for transfer logic
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Transferência realizada com sucesso!'),
-                ));
+            Consumer<BalanceProvider>(
+              builder: (context, balanceProvider, child) {
+                return ElevatedButton(
+                  onPressed: () {
+                    final amount = double.tryParse(_amountController.text);
+                    if (amount == null || amount <= 0) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('Por favor, insira um valor válido.'),
+                        backgroundColor: Colors.red,
+                      ));
+                    } else if (!balanceProvider.canSubtract(amount)) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('Saldo insuficiente.'),
+                        backgroundColor: Colors.red,
+                      ));
+                    } else {
+                      balanceProvider.subtract(amount);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('Transferência realizada com sucesso!'),
+                      ));
+                      Navigator.pop(context); // Voltar para a tela principal
+                    }
+                  },
+                  child: Text('Transferir'),
+                );
               },
-              child: Text('Transferir'),
             ),
           ],
         ),

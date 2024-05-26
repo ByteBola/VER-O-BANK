@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:verobank/providers/balance_provider.dart';
 
 class MainScreen extends StatelessWidget {
   @override
@@ -28,13 +30,17 @@ class MainScreen extends StatelessWidget {
                       fontSize: 18.0,
                     ),
                   ),
-                  Text(
-                    'R\$ 1412,00',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Consumer<BalanceProvider>(
+                    builder: (context, balanceProvider, child) {
+                      return Text(
+                        'R\$ ${balanceProvider.balance.toStringAsFixed(2)}',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -79,7 +85,8 @@ class MainScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildGridItem(BuildContext context, {required IconData icon, required String label, String? route}) {
+  Widget _buildGridItem(BuildContext context,
+      {required IconData icon, required String label, String? route}) {
     return GestureDetector(
       onTap: () {
         if (route != null) {

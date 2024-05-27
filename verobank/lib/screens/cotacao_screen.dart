@@ -51,7 +51,9 @@ class _CotacaoScreenState extends State<CotacaoScreen> {
   }
 
   void _handleConversion() {
-    if (_realController.text.isNotEmpty && _currencies.isNotEmpty) {
+    if (_realController.text.isNotEmpty &&
+        double.tryParse(_realController.text) != null &&
+        _currencies.isNotEmpty) {
       double realValue = double.parse(_realController.text);
       double convertedValue = _convertCurrency(realValue);
       setState(() {
@@ -79,7 +81,7 @@ class _CotacaoScreenState extends State<CotacaoScreen> {
           children: <Widget>[
             Image.asset(
               'lib/assets/images/budget.png',
-              height: 250, // Defina a altura desejada para a logo
+              height: 200, // Defina a altura desejada para a logo
             ),
             SizedBox(height: 20),
             TextField(
@@ -109,12 +111,28 @@ class _CotacaoScreenState extends State<CotacaoScreen> {
               },
             ),
             SizedBox(height: 20),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                color: Colors.grey[200],
+              ),
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                _convertedValue.isNotEmpty ? _convertedValue : _cotacao,
+                style: TextStyle(fontSize: 20),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 if (_realController.text.isEmpty) {
-                  setState(() {
-                    _convertedValue = 'Por favor, insira um valor em Real.';
-                  });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Por favor, insira um valor em Real.'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
                 } else {
                   _fetchCotacao().then((_) => _handleConversion());
                 }
@@ -122,18 +140,19 @@ class _CotacaoScreenState extends State<CotacaoScreen> {
               child:
                   _isLoading ? CircularProgressIndicator() : Text('Converter'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                backgroundColor: Colors.blue, // Fundo azul
+                foregroundColor: Colors.white, // Texto branco
+                textStyle: TextStyle(
+                  fontSize: 25, // Tamanho do texto maior
+                ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 15,
+                ), // Ajusta o padding
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
-            ),
-            SizedBox(height: 20),
-            Text(
-              _convertedValue.isNotEmpty ? _convertedValue : _cotacao,
-              style: TextStyle(fontSize: 18),
-              textAlign: TextAlign.center,
             ),
           ],
         ),
